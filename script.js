@@ -1,129 +1,82 @@
 document.addEventListener('DOMContentLoaded', () => {
-    document.getElementById('startGame').addEventListener('click', showLevelSelection);
-    document.querySelectorAll('.level-btn').forEach(button => {
-        button.addEventListener('click', function() {
-            const level = this.getAttribute('data-level');
-            startGame(level);
-        });
+    const startButton = document.getElementById('startGame');
+    const welcomeScreen = document.getElementById('welcomeScreen');
+    const gameBoard = document.getElementById('gameBoard');
+    const instructionsButton = document.getElementById('showInstructions');
+    const addendumButton = document.getElementById('showAddendum');
+    const instructionsModal = document.getElementById('instructionsModal');
+    const addendumModal = document.getElementById('addendumModal');
+    const closeInstructions = document.getElementById('closeInstructions');
+    const closeAddendum = document.getElementById('closeAddendum');
+    const boardSize = 5;
+
+    startButton.addEventListener('click', () => {
+        welcomeScreen.style.display = 'none';
+        gameBoard.style.display = 'grid';
+        initGame();
     });
 
-    document.getElementById('backToWelcome').addEventListener('click', backToWelcome);
-    document.getElementById('showInstructionsBtn').addEventListener('click', () => toggleSection('instructions'));
-    document.getElementById('showAddendumBtn').addEventListener('click', () => toggleSection('addendum'));
+    instructionsButton.addEventListener('click', () => {
+        instructionsModal.style.display = 'block';
+    });
 
-    // Initialize the game with the default level on page load
-    initializeGame(getGridSize('medium'));
-});
+    addendumButton.addEventListener('click', () => {
+        addendumModal.style.display = 'block';
+    });
 
-let timer;
-let time = 0;
+    closeInstructions.addEventListener('click', () => {
+        instructionsModal.style.display = 'none';
+    });
 
-function showLevelSelection() {
-    document.getElementById('levelSelection').style.display = 'block';
-    document.getElementById('instructions').style.display = 'none'; // Hide instructions
-    document.getElementById('addendum').style.display = 'none'; // Hide addendum
-}
+    closeAddendum.addEventListener('click', () => {
+        addendumModal.style.display = 'none';
+    });
 
-function startGame(level) {
-    initializeGame(getGridSize(level));
-    document.getElementById('welcomeScreen').style.display = 'none';
-    document.getElementById('gameScreen').style.display = 'block';
-    startTimer();
-}
+    function initGame() {
+        gameBoard.innerHTML = '';
 
-function backToWelcome() {
-    document.getElementById('welcomeScreen').style.display = 'block';
-    document.getElementById('gameScreen').style.display = 'none';
-    document.getElementById('levelSelection').style.display = 'none';
-    stopTimer();
-    hideSections();
-}
+        for (let i = 0; i < boardSize * boardSize; i++) {
+            let cell = document.createElement('div');
+            cell.classList.add('cell');
+            cell.addEventListener('click', () => toggleCells(i));
+            gameBoard.appendChild(cell);
+        }
 
-function toggleSection(sectionId) {
-    const section = document.getElementById(sectionId);
-    section.style.display = section.style.display === 'none' ? 'block' : 'none';
-}
-
-function hideSections() {
-    document.getElementById('instructions').style.display = 'none';
-    document.getElementById('addendum').style.display = 'none';
-}
-
-function getGridSize(level) {
-    switch(level) {
-        case 'beginner': return 3;
-        case 'medium': return 5;
-        case 'hard': return 7;
-        default: return 5;
+        randomizeBoard();
     }
-}
 
-function initializeGame(size) {
-    const gameBoard = document.getElementById('gameBoard');
-    gameBoard.innerHTML = '';
-    gameBoard.style.gridTemplateColumns = `repeat(${size}, 60px)`;
-    gameBoard.style.gridTemplateRows = `repeat(${size}, 60px)`;
-
-    for (let i = 0; i < size * size; i++) {
-        const square = document.createElement('div');
-        square.classList.add('square');
-        square.addEventListener('click', () => toggleSquare(i, size));
-        gameBoard.appendChild(square);
+    function toggleCells(index) {
+        let row = Math.floor(index / boardSize);
+        let col = index % boardSize;
+        toggleCell(row, col);
+        toggleCell(row - 1, col);
+        toggleCell(row + 1, col);
+        toggleCell(row, col - 1);
+        toggleCell(row, col + 1);
+        checkWin();
     }
-    randomizeBoard(size);
-}
 
-function randomizeBoard(size) {
-    for (let i = 0; i < size * size; i++) {
-        if (Math.random() < 0.5) {
-            toggleSquare(i, size);
+    function toggleCell(row, col) {
+        if (row >= 0 && row < boardSize && col >= 0 && col < boardSize) {
+            let cell = gameBoard.children[row * boardSize + col];
+            cell.classList.toggle('is-off');
         }
     }
-}
 
-function toggleSquare(index, size) {
-    const row = Math.floor(index / size);
-    const col = index % size;
-    toggle(row, col, size);
-    toggle(row - 1, col, size);
-    toggle(row + 1, col, size);
-    toggle(row, col - 1, size);
-    toggle(row, col + 1, size);
-    checkWin(size);
-}
-
-function toggle(row, col, size) {
-    if (row >= 0 && row < size && col >= 0 && col < size) {
-        const index = row * size + col;
-        const square = document.getElementById('gameBoard').children[index];
-        square.classList.toggle('is-off');
+    function randomizeBoard() {
+        for (let i = 0; i < boardSize * boardSize; i++) {
+            if (Math.random() < 0.5) {
+                toggleCells(i);
+            }
+        }
     }
-}
 
-function checkWin(size) {
-    const squares = document.querySelectorAll('.square');
-    const isWin = Array.from(squares).every(square => square.classList.contains('is-off'));
-    if (isWin) {
-        alert('Congratulations, you won!');
-        endGame();
+    function checkWin() {
+        const isWin = [...gameBoard.children].every(cell => cell.classList.contains('is-off'));
+        if (isWin) {
+            window.alert('You win!');
+            welcomeScreen.style.display = 'block';
+            gameBoard.style.display = 'none';
+        }
     }
-}
-
-function startTimer() {
-    time = 0;
-    timer = setInterval(() => {
-        time++;
-        document.getElementById('time').textContent = time;
-    }, 1000);
-}
-
-function stopTimer() {
-    clearInterval(timer);
-}
-
-function endGame() {
-    backToWelcome();
-}
-
-// Initialize the game with the default level on page load
-initializeGame(getGridSize('medium'));
+});
