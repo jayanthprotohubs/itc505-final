@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lights Out Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Welcome to Lights Out!</h1>
+        </header>
+        <main>
+            <div id="welcomeScreen" class="screen">
+                <button id="startGame" class="btn">Start Game</button>
+                <button id="showInstructionsBtn" class="btn">Instructions</button>
+                <button id="showAddendumBtn" class="btn">Addendum</button>
+                <div id="instructions" class="info-box" style="display: none;">
+                    <h2>Instructions</h2>
+                    <ol>
+                        <li><strong>Objective:</strong> Turn off all the lights on the game board to win.</li>
+                        <li><strong>Gameplay:</strong> Clicking a light toggles it and its adjacent lights.</li>
+                        <li><strong>Starting Configuration:</strong> The game board starts with random lights on.</li>
+                        <li><strong>Winning Condition:</strong> You win when all lights are turned off.</li>
+                        <li><strong>Levels:</strong> Choose a difficulty level before starting the game.</li>
+                    </ol>
+                    <h3>Rules and Strategies:</h3>
+                    <ul>
+                        <li>Experiment with different sequences of clicks to find the optimal strategy for each level.</li>
+                        <li>Remember that clicking a light will also affect neighboring lights.</li>
+                        <li>Strive for efficiency, as fewer clicks will lead to a faster victory.</li>
+                        <li>Keep track of your time and try to beat your previous records.</li>
+                    </ul>
+                    <h3>Level Selection:</h3>
+                    <p>Each difficulty level offers a unique challenge:</p>
+                    <ul>
+                        <li><strong>Beginner:</strong> A 3x3 grid for a quick warm-up.</li>
+                        <li><strong>Medium:</strong> A 5x5 grid with more complexity.</li>
+                        <li><strong>Hard:</strong> A 7x7 grid for the ultimate challenge.</li>
+                    </ul>
+                    <!-- Add more instructions or tips as needed -->
+                </div>
+                <div id="addendum" class="info-box" style="display: none;">
+                    <h2>Addendum</h2>
+                    <p>This game project was a valuable learning experience. Here are some key points to consider:</p>
+                    <ol>
+                        <li><strong>Development Background:</strong> The project was initiated to explore JavaScript, CSS, and HTML development.</li>
+                        <li><strong>Learning Goals:</strong> We aimed to gain hands-on experience in web development and JavaScript programming.</li>
+                        <li><strong>Technologies Used:</strong> The game was developed using JavaScript for interactivity, CSS for styling, and HTML for structure.</li>
+                        <li><strong>Development Process:</strong> We followed a structured approach, starting with planning and wireframing before diving into coding.</li>
+                        <li><strong>Challenges Faced:</strong> Overcoming challenges, such as implementing the game logic and ensuring responsiveness, was a significant part of the development journey.</li>
+                        <li><strong>Problem Solving:</strong> We utilized online resources, forums, and documentation to solve technical issues encountered during development.</li>
+                        <li><strong>Design Choices:</strong> Our design choices were influenced by simplicity, ensuring an intuitive user interface and enjoyable gameplay.</li>
+                        <li><strong>Responsiveness:</strong> The game was designed to adapt gracefully to various screen sizes and orientations, enhancing the user experience.</li>
+                        <li><strong>Code Structure:</strong> The code was organized into modular functions and classes to promote maintainability and readability.</li>
+                        <li><strong>Code Optimization:</strong> We optimized critical parts of the code for better performance, resulting in smooth gameplay.</li>
+                        <li><strong>Future Enhancements:</strong> Future plans include adding levels, customizable themes, and a leaderboard feature for more engaging gameplay.</li>
+                        <li><strong>Testing:</strong> Rigorous testing was conducted on different browsers and devices to ensure cross-browser compatibility and functionality.</li>
+                        <li><strong>Feedback:</strong> Valuable feedback from testers was used to fine-tune the game and fix any identified bugs.</li>
+                        <li><strong>Resources:</strong> Online tutorials, developer documentation, and open-source libraries played a crucial role in our development journey.</li>
+                        <li><strong>Acknowledgments:</strong> We'd like to express gratitude to our mentors and the web development community for their support and inspiration.</li>
+                    </ol>
+                    <!-- Feel free to add more content or details as needed -->
+                </div>
+            </div>
+
+            <div id="gameScreen" class="screen" style="display:none;">
+                <div id="levelSelection">
+                    <button class="btn level-btn" data-level="beginner">Beginner</button>
+                    <button class="btn level-btn" data-level="medium">Medium</button>
+                    <button class="btn level-btn" data-level="hard">Hard</button>
+                </div>
+                <div id="gameBoard" class="game-board"></div>
+                <button id="backToWelcome" class="btn">Back</button>
+                <div id="timer">Time: <span id="time">0</span> seconds</div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+ 
